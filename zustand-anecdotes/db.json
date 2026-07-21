@@ -62,7 +62,7 @@
     },
     {
       "content": "",
-      "votes": 1,
+      "votes": 2,
       "id": "cfnzOWtiWCI"
     },
     {
@@ -73,12 +73,7 @@
     {
       "content": "",
       "votes": 0,
-      "id": "FFcQkadFwjs"
-    },
-    {
-      "content": "",
-      "votes": 0,
-      "id": "NqpPS77hepE"
+      "id": "X1BFLZPWlOs"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

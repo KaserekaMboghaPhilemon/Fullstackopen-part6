@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import anecdoteService from "./services/anecdotes";
 
-const useAnecdoteStore = create((set) => ({
+const useAnecdoteStore = create((set, get) => ({
   anecdotes: [],
   filter: "",
   actions: {
@@ -10,22 +10,15 @@ const useAnecdoteStore = create((set) => ({
       set(() => ({ anecdotes }));
     },
     vote: async (id) => {
-      const anecdoteToUpdate = useAnecdoteStore
-        .getState()
-        .anecdotes.find((anecdote) => anecdote.id === id);
-
-      if (!anecdoteToUpdate) {
-        return;
-      }
-
-      const updatedAnecdote = await anecdoteService.update(id, {
-        ...anecdoteToUpdate,
-        votes: anecdoteToUpdate.votes + 1,
-      });
-
+      const anecdoteToChange = get().anecdotes.find((a) => a.id === id);
+      const updatedAnecdote = {
+        ...anecdoteToChange,
+        votes: anecdoteToChange.votes + 1,
+      };
+      const savedAnecdote = await anecdoteService.update(id, updatedAnecdote);
       set((state) => ({
-        anecdotes: state.anecdotes.map((anecdote) =>
-          anecdote.id === id ? updatedAnecdote : anecdote,
+        anecdotes: state.anecdotes.map((a) =>
+          a.id === id ? savedAnecdote : a,
         ),
       }));
     },
@@ -33,6 +26,12 @@ const useAnecdoteStore = create((set) => ({
       const newAnecdote = await anecdoteService.createNew(content);
       set((state) => ({
         anecdotes: state.anecdotes.concat(newAnecdote),
+      }));
+    },
+    deleteAnecdote: async (id) => {
+      await anecdoteService.remove(id);
+      set((state) => ({
+        anecdotes: state.anecdotes.filter((a) => a.id !== id),
       }));
     },
     setFilter: (filter) => set(() => ({ filter })),
