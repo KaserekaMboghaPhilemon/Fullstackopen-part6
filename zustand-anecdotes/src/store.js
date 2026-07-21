@@ -11,18 +11,17 @@ const anecdotesAtStart = [
 
 const getId = () => (100000 * Math.random()).toFixed(0);
 
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0,
-  };
-};
+const asObject = (anecdote) => ({
+  content: anecdote,
+  id: getId(),
+  votes: 0,
+});
 
 const initialState = anecdotesAtStart.map(asObject);
 
 const useAnecdoteStore = create((set) => ({
   anecdotes: initialState,
+  filter: "",
   actions: {
     vote: (id) =>
       set((state) => ({
@@ -40,9 +39,23 @@ const useAnecdoteStore = create((set) => ({
           votes: 0,
         }),
       })),
+    setFilter: (filter) => set(() => ({ filter })),
   },
 }));
 
-export const useAnecdotes = () => useAnecdoteStore((state) => state.anecdotes);
+// Custom hook returning anecdotes filtered case-insensitively
+export const useAnecdotes = () => {
+  const anecdotes = useAnecdoteStore((state) => state.anecdotes);
+  const filter = useAnecdoteStore((state) => state.filter);
+
+  if (!filter) {
+    return anecdotes;
+  }
+
+  return anecdotes.filter((anecdote) =>
+    anecdote.content.toLowerCase().includes(filter.toLowerCase()),
+  );
+};
+
 export const useAnecdoteActions = () =>
   useAnecdoteStore((state) => state.actions);
