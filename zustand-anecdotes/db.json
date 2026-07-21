@@ -3,42 +3,57 @@
     {
       "content": "If it hurts, do it more often",
       "id": "1",
-      "votes": 0
+      "votes": 4
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
       "id": "2",
-      "votes": 0
+      "votes": 5
     },
     {
       "content": "The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
       "id": "3",
-      "votes": 0
+      "votes": 6
     },
     {
       "content": "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
       "id": "4",
-      "votes": 0
+      "votes": 7
     },
     {
       "content": "Premature optimization is the root of all evil.",
       "id": "5",
-      "votes": 0
+      "votes": 6
     },
     {
       "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
       "id": "6",
-      "votes": 0
+      "votes": 3
     },
     {
       "content": "the blood of Jesus is the answer",
-      "votes": 0,
+      "votes": 1,
       "id": "0dU1xtVnxYk"
     },
     {
       "content": "my past can not dectate my future rather the power of being God's child",
-      "votes": 0,
+      "votes": 17,
       "id": "dVIf5FP59V8"
+    },
+    {
+      "content": "the love of God constrains me",
+      "votes": 2,
+      "id": "M9fWHhLTmjA"
+    },
+    {
+      "content": "the blood of Jesus is the answer",
+      "votes": 2,
+      "id": "PyJ7cmDitGo"
+    },
+    {
+      "content": "the love of God constrains me",
+      "votes": 2,
+      "id": "cIMCKSZTFjc"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
