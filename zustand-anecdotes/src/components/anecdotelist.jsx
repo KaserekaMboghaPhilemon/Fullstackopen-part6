@@ -4,9 +4,12 @@ const AnecdoteList = () => {
   const anecdotes = useAnecdotes();
   const { vote } = useAnecdoteActions();
 
+  // Sort anecdotes in descending order of votes without mutating state
+  const sortedAnecdotes = anecdotes.toSorted((a, b) => b.votes - a.votes);
+
   return (
     <div>
-      {anecdotes.map((anecdote) => (
+      {sortedAnecdotes.map((anecdote) => (
         <div key={anecdote.id}>
           <div>{anecdote.content}</div>
           <div>
