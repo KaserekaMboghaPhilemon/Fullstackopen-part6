@@ -29,6 +29,17 @@
       "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
       "id": "6",
       "votes": 0
+    },
+    {
+      "content": "the blood of Jesus is the answer",
+      "votes": 0,
+      "id": "0dU1xtVnxYk"
+    },
+    {
+      "content": "my past can not dectate my future rather the power of being God's child",
+      "votes": 0,
+      "id": "dVIf5FP59V8"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
