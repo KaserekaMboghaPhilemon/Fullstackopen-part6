@@ -11,7 +11,7 @@ vi.mock("./services/anecdotes", () => ({
 }));
 
 import anecdoteService from "./services/anecdotes";
-import useAnecdoteStore, { useAnecdotes } from "./store";
+import useAnecdoteStore from "./store";
 
 beforeEach(() => {
   useAnecdoteStore.setState({ anecdotes: [], filter: "" });
@@ -44,19 +44,42 @@ describe("Anecdote store and components", () => {
       { id: "3", content: "JavaScript is fun", votes: 1 },
     ];
 
-    // Set state with test anecdotes and a filter value
     useAnecdoteStore.setState({ anecdotes, filter: "react" });
 
-    // Call state getter / selector logic directly
-    const filteredAnecdotes = useAnecdoteStore
-      .getState()
-      .anecdotes.filter((a) =>
-        a.content
-          .toLowerCase()
-          .includes(useAnecdoteStore.getState().filter.toLowerCase()),
-      );
+    const state = useAnecdoteStore.getState();
+    const filteredAnecdotes = state.anecdotes.filter((a) =>
+      a.content.toLowerCase().includes(state.filter.toLowerCase()),
+    );
 
     expect(filteredAnecdotes).toHaveLength(1);
     expect(filteredAnecdotes[0].content).toBe("React is awesome");
+  });
+
+  it("increases the vote count of an anecdote when voted", async () => {
+    const initialAnecdote = {
+      id: "1",
+      content:
+        "Debugging is twice as hard as writing the code in the first place.",
+      votes: 0,
+    };
+
+    useAnecdoteStore.setState({ anecdotes: [initialAnecdote], filter: "" });
+
+    // Mock the backend update response returning incremented votes
+    const updatedAnecdote = { ...initialAnecdote, votes: 1 };
+    anecdoteService.update.mockResolvedValue(updatedAnecdote);
+
+    // Call the vote action
+    await useAnecdoteStore.getState().actions.vote("1");
+
+    // Verify service was called with incremented object
+    expect(anecdoteService.update).toHaveBeenCalledWith("1", {
+      ...initialAnecdote,
+      votes: 1,
+    });
+
+    // Verify store state updated correctly
+    const anecdotesInStore = useAnecdoteStore.getState().anecdotes;
+    expect(anecdotesInStore[0].votes).toBe(1);
   });
 });
