@@ -69,11 +69,6 @@
       "content": "never outshine your master",
       "votes": 2,
       "id": "WpQ9m3k41n0"
-    },
-    {
-      "content": "",
-      "votes": 0,
-      "id": "X1BFLZPWlOs"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
