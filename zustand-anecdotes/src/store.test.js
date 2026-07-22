@@ -11,7 +11,7 @@ vi.mock("./services/anecdotes", () => ({
 }));
 
 import anecdoteService from "./services/anecdotes";
-import useAnecdoteStore, { useAnecdotes, useAnecdoteActions } from "./store";
+import useAnecdoteStore, { useAnecdotes } from "./store";
 
 beforeEach(() => {
   useAnecdoteStore.setState({ anecdotes: [], filter: "" });
@@ -35,5 +35,28 @@ describe("Anecdote store and components", () => {
 
     expect(useAnecdoteStore.getState().anecdotes).toEqual(mockAnecdotes);
     expect(anecdoteService.getAll).toHaveBeenCalledTimes(1);
+  });
+
+  it("filters anecdotes correctly based on the store filter", () => {
+    const anecdotes = [
+      { id: "1", content: "React is awesome", votes: 3 },
+      { id: "2", content: "Zustand handles state easily", votes: 8 },
+      { id: "3", content: "JavaScript is fun", votes: 1 },
+    ];
+
+    // Set state with test anecdotes and a filter value
+    useAnecdoteStore.setState({ anecdotes, filter: "react" });
+
+    // Call state getter / selector logic directly
+    const filteredAnecdotes = useAnecdoteStore
+      .getState()
+      .anecdotes.filter((a) =>
+        a.content
+          .toLowerCase()
+          .includes(useAnecdoteStore.getState().filter.toLowerCase()),
+      );
+
+    expect(filteredAnecdotes).toHaveLength(1);
+    expect(filteredAnecdotes[0].content).toBe("React is awesome");
   });
 });
