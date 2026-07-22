@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
+// Mock the backend service layer
 vi.mock("./services/anecdotes", () => ({
   default: {
     getAll: vi.fn(),
@@ -10,14 +11,14 @@ vi.mock("./services/anecdotes", () => ({
 }));
 
 import anecdoteService from "./services/anecdotes";
-import useAnecdoteStore from "./store";
+import useAnecdoteStore, { useAnecdotes, useAnecdoteActions } from "./store";
 
 beforeEach(() => {
   useAnecdoteStore.setState({ anecdotes: [], filter: "" });
   vi.clearAllMocks();
 });
 
-describe("Anecdote store initialization", () => {
+describe("Anecdote store and components", () => {
   it("initializes state with anecdotes returned by the backend", async () => {
     const mockAnecdotes = [
       { id: "1", content: "If it hurts, do it more often", votes: 0 },
