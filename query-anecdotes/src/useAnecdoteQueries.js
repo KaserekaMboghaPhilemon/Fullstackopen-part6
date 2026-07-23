@@ -1,14 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createAnecdote, getAnecdotes, updateAnecdote } from "./requests";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getAnecdotes, createAnecdote, updateAnecdote } from "./requests";
 
-export const useAnecdotes = () =>
-  useQuery({
+// MUST HAVE "export"
+export const useAnecdotes = () => {
+  return useQuery({
     queryKey: ["anecdotes"],
     queryFn: getAnecdotes,
-    refetchOnWindowFocus: false,
+    retry: 1,
   });
+};
 
-export const useCreateAnecdote = () => {
+export const useAddAnecdote = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -24,8 +26,16 @@ export const useVoteAnecdote = () => {
 
   return useMutation({
     mutationFn: updateAnecdote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["anecdotes"] });
+    onSuccess: (updatedAnecdote) => {
+      const anecdotes = queryClient.getQueryData(["anecdotes"]);
+      if (anecdotes) {
+        queryClient.setQueryData(
+          ["anecdotes"],
+          anecdotes.map((a) =>
+            a.id === updatedAnecdote.id ? updatedAnecdote : a,
+          ),
+        );
+      }
     },
   });
 };

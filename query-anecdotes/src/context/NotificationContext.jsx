@@ -1,5 +1,5 @@
-// src/context/NotificationContext.jsx
-import { createContext, useReducer } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useReducer, useContext } from "react";
 
 const notificationReducer = (state, action) => {
   switch (action.type) {
@@ -11,7 +11,7 @@ const notificationReducer = (state, action) => {
       return state;
   }
 };
-/* eslint-disable react-refresh/only-export-components */
+
 export const NotificationContext = createContext();
 
 export const NotificationContextProvider = (props) => {
@@ -25,6 +25,28 @@ export const NotificationContextProvider = (props) => {
       {props.children}
     </NotificationContext.Provider>
   );
+};
+
+// Custom hooks for accessing context easily
+export const useNotificationValue = () => {
+  const [notification] = useContext(NotificationContext);
+  return notification;
+};
+
+export const useNotificationDispatch = () => {
+  const [, dispatch] = useContext(NotificationContext);
+  return dispatch;
+};
+
+export const useNotify = () => {
+  const dispatch = useNotificationDispatch();
+
+  return (message, seconds = 5) => {
+    dispatch({ type: "SET", payload: message });
+    setTimeout(() => {
+      dispatch({ type: "CLEAR" });
+    }, seconds * 1000);
+  };
 };
 
 export default NotificationContext;

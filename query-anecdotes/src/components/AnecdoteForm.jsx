@@ -1,8 +1,8 @@
-import { useCreateAnecdote } from "../useAnecdoteQueries";
-import { useNotify } from "../hooks/useNotification";
+import { useAddAnecdote } from "../useAnecdoteQueries";
+import { useNotify } from "../context/NotificationContext";
 
 const AnecdoteForm = () => {
-  const addMutation = useCreateAnecdote();
+  const addMutation = useAddAnecdote();
   const notify = useNotify();
 
   const onCreate = (event) => {
@@ -15,6 +15,13 @@ const AnecdoteForm = () => {
       {
         onSuccess: () => {
           notify(`anecdote '${content}' created`);
+        },
+        onError: (error) => {
+          const errorMessage =
+            error.response?.data?.error ||
+            "too short anecdote, must have length 5 or more";
+
+          notify(errorMessage);
         },
       },
     );
