@@ -1,21 +1,28 @@
-import useAnecdotes from "../hooks/useAnecdotes";
+import { useCreateAnecdote } from "../useAnecdoteQueries";
+import { useNotify } from "../hooks/useNotification";
 
 const AnecdoteForm = () => {
-  const { createAnecdote } = useAnecdotes();
+  const addMutation = useCreateAnecdote();
+  const notify = useNotify();
 
   const onCreate = (event) => {
     event.preventDefault();
-    const content = event.target.anecdote.value.trim();
+    const content = event.target.anecdote.value;
     event.target.anecdote.value = "";
 
-    if (content.length >= 5) {
-      createAnecdote(content);
-    }
+    addMutation.mutate(
+      { content, votes: 0 },
+      {
+        onSuccess: () => {
+          notify(`anecdote '${content}' created`);
+        },
+      },
+    );
   };
 
   return (
     <div>
-      <h3>Create new</h3>
+      <h3>create new</h3>
       <form onSubmit={onCreate}>
         <input name="anecdote" />
         <button type="submit">create</button>
